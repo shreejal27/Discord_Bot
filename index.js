@@ -37,6 +37,32 @@ client.on('messageCreate', message => {
       count++;
     }, 500);
   }
+
+
+  if (message.content.toLowerCase() === 'weather kathmandu') {
+    const url = "https://api.openweathermap.org/data/2.5/weather?q=kathmandu&units=metric&appid=" + process.env.WEATHER_TOKEN;
+
+    fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        const name = data.name;
+        const icon = data.weather[0].icon;
+        const description = data.weather[0].description;
+        const temperature = data.main.temp;
+        const humidity = data.main.humidity;
+        const windspeed = data.wind.speed;
+        const feelslike = data.main.feels_like;
+
+        message.reply('Weather for: ' + name);
+        message.reply('Temperature: ' + temperature + " .C");
+        message.reply('Description: ' + description);
+        message.reply('Humidity: ' + humidity + " %");
+        message.reply('Windspeed: ' + windspeed + " km/hr");
+        message.reply('FeelsLike: ' + feelslike + " .C");
+      }
+      )
+  }
+
 });
 // Log in to Discord using token from .env 
 client.login(process.env.DISCORD_TOKEN); 
